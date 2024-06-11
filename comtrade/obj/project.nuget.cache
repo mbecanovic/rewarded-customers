@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "It1gV22YgxQBTzT8RRcm9inaNo8WnOOkraHO41nsFwyKB6I4nF8frge993sDuINzkmFZw7g14QFp1P3eRydQNw==",
+  "dgSpecHash": "PGHsUVjMcMdJgGLE/A641Rc++epjSNwrvvNjP8zsc1Mn/CcPxIl2J1Go4EPeHXiiEMZWi3MJwCe8KQ9kFh4yjQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\burag\\OneDrive\\Desktop\\rewarded-customers-main\\comtrade\\comtrade.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\burag\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\burag\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\burag\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\burag\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\burag\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\burag\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\burag\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

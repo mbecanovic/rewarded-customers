@@ -308,3 +308,5 @@ C:\Users\burag\OneDrive\Desktop\rewarded-customers-main\comtrade\bin\Debug\net8.
 C:\Users\burag\OneDrive\Desktop\rewarded-customers-main\comtrade\bin\Debug\net8.0\tr\System.ServiceModel.Federation.resources.dll
 C:\Users\burag\OneDrive\Desktop\rewarded-customers-main\comtrade\bin\Debug\net8.0\zh-Hans\System.ServiceModel.Federation.resources.dll
 C:\Users\burag\OneDrive\Desktop\rewarded-customers-main\comtrade\bin\Debug\net8.0\zh-Hant\System.ServiceModel.Federation.resources.dll
+C:\Users\burag\OneDrive\Desktop\rewarded-customers-main\comtrade\obj\Debug\net8.0\comtrade.sourcelink.json
+C:\Users\burag\OneDrive\Desktop\rewarded-customers-main\comtrade\bin\Debug\net8.0\Newtonsoft.Json.dll

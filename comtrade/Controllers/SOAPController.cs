@@ -1,106 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-[ApiController]
-[Route("[controller]")]
-public class SoapController : ControllerBase
+namespace comtrade.Controllers
 {
-    private readonly SoapServiceClient _soapServiceClient;
-
-    public SoapController(SoapServiceClient soapServiceClient)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SoapController : ControllerBase
     {
-        _soapServiceClient = soapServiceClient;
-    }
+        private readonly HttpClient _httpClient;
 
-    [HttpGet]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(500)]
-    public IActionResult ParseXml()
-    {
-        try
+        public SoapController(HttpClient httpClient)
         {
-            string xmlString = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"https://www.crcind.com/csp/samples/SOAP.Demo.cls?soap_method=FindPerson&id=4/\">" +
-                                "<SOAP-ENV:Body>" +
-                                "<FindPersonResponse>" +
-                                "<FindPersonResult>" +
-                                "<Name>Baker,Marvin Z.</Name>" +
-                                "<SSN>198-22-7709</SSN>" +
-                                "<DOB>1960-02-29</DOB>" +
-                                "<Home>" +
-                                "<Street>1243 First Blvd</Street>" +
-                                "<City>Queensbury</City>" +
-                                "<State>NV</State>" +
-                                "<Zip>26930</Zip>" +
-                                "</Home>" +
-                                "<Office>" +
-                                "<Street>3717 Ash Drive</Street>" +
-                                "<City>Zanesville</City>" +
-                                "<State>NY</State>" +
-                                "<Zip>19361</Zip>" +
-                                "</Office>" +
-                                "<FavoriteColors>" +
-                                "<FavoriteColorsItem>Purple</FavoriteColorsItem>" +
-                                "</FavoriteColors>" +
-                                "<Age>64</Age>" +
-                                "</FindPersonResult>" +
-                                "</FindPersonResponse>" +
-                                "</SOAP-ENV:Body>" +
-                                "</SOAP-ENV:Envelope>";
-
-            // Parsiranje XML dokumenta
-            XDocument doc = XDocument.Parse(xmlString);
-            XNamespace ns = "https://www.crcind.com/csp/samples/SOAP.Demo.cls?soap_method=FindPerson&id=4";
-
-            // Pronalaženje FindPersonResult elementa
-            var findPersonResult = doc.Descendants(ns + "FindPersonResult").FirstOrDefault();
-
-            // Izvlačenje vrednosti iz FindPersonResult elementa
-            string name = findPersonResult?.Element("Name")?.Value;
-            string ssn = findPersonResult?.Element("SSN")?.Value;
-            string dob = findPersonResult?.Element("DOB")?.Value;
-            string homeStreet = findPersonResult?.Element("Home")?.Element("Street")?.Value;
-            string homeCity = findPersonResult?.Element("Home")?.Element("City")?.Value;
-            string homeState = findPersonResult?.Element("Home")?.Element("State")?.Value;
-            string homeZip = findPersonResult?.Element("Home")?.Element("Zip")?.Value;
-            string officeStreet = findPersonResult?.Element("Office")?.Element("Street")?.Value;
-            string officeCity = findPersonResult?.Element("Office")?.Element("City")?.Value;
-            string officeState = findPersonResult?.Element("Office")?.Element("State")?.Value;
-            string officeZip = findPersonResult?.Element("Office")?.Element("Zip")?.Value;
-            string favoriteColor = findPersonResult?.Element("FavoriteColors")?.Element("FavoriteColorsItem")?.Value;
-            string age = findPersonResult?.Element("Age")?.Value;
-
-            // Možete dalje obraditi izvučene vrednosti pre nego što ih vratite
-
-            return Ok(new
-            {
-                Name = name,
-                SSN = ssn,
-                DOB = dob,
-                Home = new
-                {
-                    Street = homeStreet,
-                    City = homeCity,
-                    State = homeState,
-                    Zip = homeZip
-                },
-                Office = new
-                {
-                    Street = officeStreet,
-                    City = officeCity,
-                    State = officeState,
-                    Zip = officeZip
-                },
-                FavoriteColor = favoriteColor,
-                Age = age
-            });
+            _httpClient = httpClient;
         }
-        catch (Exception ex)
-        {
-            // Logovanje greške
-            // Možete dodati svoju logiku za logovanje grešaka ovde
 
-            return StatusCode(500, "Internal server error");
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPerson(int id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.crcind.com/csp/samples/SOAP.Demo.cls?soap_method=FindPerson&id={id}");
+            request.Headers.Add("Cookie", "CSPSESSIONID-SP-443-UP-csp-samples-=001000010000CdLRT6Tkdp0000_iCAlzIylIc8G_msf$ENCg--; CSPWSERVERID=00db463d2896c4250cfe0db6962adde0df59cbd9");
+
+            var response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var xmlContent = await response.Content.ReadAsStringAsync();
+                var xmlDoc = XDocument.Parse(xmlContent);
+
+                // Namespace-ovi u XML-u
+                XNamespace soapenv = "http://schemas.xmlsoap.org/soap/envelope/";
+                XNamespace tempuri = "http://tempuri.org";
+
+                // Selektujemo odgovarajući čvor
+                var personNode = xmlDoc.Descendants(soapenv + "Body").Descendants(tempuri + "FindPersonResponse").Descendants(tempuri + "FindPersonResult").FirstOrDefault();
+
+                // Kreiramo objekat sa podacima koje smo izvukli
+                var personData = new
+                {
+                    Name = (string)personNode.Element(tempuri + "Name"),
+                    SSN = (string)personNode.Element(tempuri + "SSN"),
+                    DOB = (string)personNode.Element(tempuri + "DOB"),
+                    Home = new
+                    {
+                        Street = (string)personNode.Element(tempuri + "Home").Element(tempuri + "Street"),
+                        City = (string)personNode.Element(tempuri + "Home").Element(tempuri + "City"),
+                        State = (string)personNode.Element(tempuri + "Home").Element(tempuri + "State"),
+                        Zip = (string)personNode.Element(tempuri + "Home").Element(tempuri + "Zip")
+                    },
+                    Office = new
+                    {
+                        Street = (string)personNode.Element(tempuri + "Office").Element(tempuri + "Street"),
+                        City = (string)personNode.Element(tempuri + "Office").Element(tempuri + "City"),
+                        State = (string)personNode.Element(tempuri + "Office").Element(tempuri + "State"),
+                        Zip = (string)personNode.Element(tempuri + "Office").Element(tempuri + "Zip")
+                    },
+                    FavoriteColors = (string)personNode.Element(tempuri + "FavoriteColors").Element(tempuri + "FavoriteColorsItem"),
+                    Age = (string)personNode.Element(tempuri + "Age")
+                };
+
+                // Konvertujemo objekat u JSON format
+                return Ok(personData);
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+            }
         }
     }
 }
+

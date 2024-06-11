@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 public class SoapServiceClient
 {
@@ -11,14 +14,28 @@ public class SoapServiceClient
 
     public async Task<string> FindPersonAsync(string personName)
     {
+        var requestContent = new StringContent(
+            $"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sam=\"http://tempuri.org\"><soapenv:Header/><soapenv:Body><sam:FindPerson><sam:name>{personName}</sam:name></sam:FindPerson></soapenv:Body></soapenv:Envelope>",
+            Encoding.UTF8,
+            "application/soap+xml"
+        );
+
         var request = new HttpRequestMessage(HttpMethod.Post, "https://www.crcind.com/csp/samples/SOAP.Demo.cls")
         {
-            Content = new StringContent($"<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:sam=\"http://tempuri.org\"><soap:Header/><soap:Body><sam:FindPerson><sam:name>{personName}</sam:name></sam:FindPerson></soap:Body></soap:Envelope>", Encoding.UTF8, "application/soap+xml")
-            
+            Content = requestContent
         };
-        Console.WriteLine(await request.Content.ReadAsStringAsync());
+
         var response = await _client.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // Handle SOAP fault
+            var soapFault = XElement.Parse(responseContent);
+            var faultString = soapFault.Descendants(XName.Get("faultstring", "http://schemas.xmlsoap.org/soap/envelope/")).FirstOrDefault()?.Value;
+            throw new HttpRequestException($"SOAP Fault: {faultString}");
+        }
+
+        return responseContent;
     }
 }
