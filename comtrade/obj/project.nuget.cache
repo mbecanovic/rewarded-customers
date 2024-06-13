@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PGHsUVjMcMdJgGLE/A641Rc++epjSNwrvvNjP8zsc1Mn/CcPxIl2J1Go4EPeHXiiEMZWi3MJwCe8KQ9kFh4yjQ==",
+  "dgSpecHash": "m9wOmZqbM5IfXo3TOOBFfAgs/XJFuQrYMvQycyA9VglJ0RiPCROPkIIbrOmQvMhjRdd285qrzWKtVFbrDkafaw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\burag\\OneDrive\\Desktop\\rewarded-customers-main\\comtrade\\comtrade.csproj",
+  "projectFilePath": "D:\\projekti\\rewarded-customers\\comtrade\\comtrade.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\burag\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\burag\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

@@ -14,8 +14,7 @@ namespace comtrade.RewardedCustomer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-
+            //entity relationships defining
             modelBuilder.Entity<Address>()
                 .HasKey(a => a.Id);
 

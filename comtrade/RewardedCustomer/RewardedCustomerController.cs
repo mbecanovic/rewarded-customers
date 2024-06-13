@@ -41,7 +41,8 @@ namespace comtrade.RewardedCustomer
                         Zip = rc.OfficeAddress.Zip
                     },
                     FavoriteColors = rc.FavoriteColors,
-                    Age = rc.Age
+                    Age = rc.Age,
+                    TimesRewarded = rc.TimesRewarded
                 })
                 .ToListAsync();
 

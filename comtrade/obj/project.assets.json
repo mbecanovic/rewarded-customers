@@ -6837,11 +6837,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\burag\\OneDrive\\Desktop\\rewarded-customers-main\\comtrade\\comtrade.csproj",
+      "projectUniqueName": "D:\\projekti\\rewarded-customers\\comtrade\\comtrade.csproj",
       "projectName": "comtrade",
-      "projectPath": "C:\\Users\\burag\\OneDrive\\Desktop\\rewarded-customers-main\\comtrade\\comtrade.csproj",
+      "projectPath": "D:\\projekti\\rewarded-customers\\comtrade\\comtrade.csproj",
       "packagesPath": "C:\\Users\\burag\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\burag\\OneDrive\\Desktop\\rewarded-customers-main\\comtrade\\obj\\",
+      "outputPath": "D:\\projekti\\rewarded-customers\\comtrade\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\burag\\AppData\\Roaming\\NuGet\\NuGet.Config",

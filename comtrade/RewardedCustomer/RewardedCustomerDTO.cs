@@ -9,6 +9,7 @@
         public AddressDTO Office { get; set; }
         public string FavoriteColors { get; set; }
         public string Age { get; set; }
+        public int TimesRewarded { get; set; }
     }
     public class AddressDTO
     {

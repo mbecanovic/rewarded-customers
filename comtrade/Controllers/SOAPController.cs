@@ -25,7 +25,7 @@ namespace comtrade.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPerson(int id, string agentId)
         {
-            // Provera i praćenje poziva API-ja
+            //checking and counting the interactions with database (how many times customer has been rewarded) 
             var apiUsage = _context.ApiUsages.FirstOrDefault(a => a.AgentId == agentId);
             if (apiUsage != null)
             {
@@ -36,7 +36,7 @@ namespace comtrade.Controllers
 
                 if (apiUsage.LastCallTime.Date != DateTime.Today)
                 {
-                    apiUsage.CallCount = 0; // Resetujemo broj poziva svakog dana
+                    apiUsage.CallCount = 0; // restararing counter after one day
                 }
 
                 apiUsage.CallCount += 1;
@@ -56,12 +56,16 @@ namespace comtrade.Controllers
 
             await _context.SaveChangesAsync();
 
+
+            //request for conecting to a api that contains xml data
             var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.crcind.com/csp/samples/SOAP.Demo.cls?soap_method=FindPerson&id={id}");
             request.Headers.Add("Cookie", "CSPSESSIONID-SP-443-UP-csp-samples-=001000010000CdLRT6Tkdp0000_iCAlzIylIc8G_msf$ENCg--; CSPWSERVERID=00db463d2896c4250cfe0db6962adde0df59cbd9");
+
 
             var response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
+                //parse a xml to a json
                 var xmlContent = await response.Content.ReadAsStringAsync();
                 var xmlDoc = XDocument.Parse(xmlContent);
 
@@ -77,7 +81,7 @@ namespace comtrade.Controllers
                 {
                     return NotFound("Person not found in the SOAP response.");
                 }
-
+                //defining an object
                 var personData = new
                 {
                     Id = (int?)personNode.Element(tempuri + "ID") ?? 0,
@@ -200,7 +204,7 @@ namespace comtrade.Controllers
         }
 
         // Pomoćna metoda za dobijanje SSN-a osobe prema ID-u
-        private async Task<string> GetPersonSSN(int id)
+        /*private async Task<string> GetPersonSSN(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.crcind.com/csp/samples/SOAP.Demo.cls?soap_method=FindPerson&id={id}");
             var response = await _httpClient.SendAsync(request);
@@ -223,7 +227,7 @@ namespace comtrade.Controllers
                 }
             }
             return null;
-        }
+        }  */
 
     }
 }
