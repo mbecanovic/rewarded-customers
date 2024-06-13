@@ -15,3 +15,5 @@ Whas is done:
 This simulation in .NET provides an HttpGet method to retrieve data from an API containing customer data. The data retrieved through the request is in XML format, which the application converts to JSON, allowing it to be written to a database.
 The application enables agents to use their ID to choose which customers should be rewarded. The XML data on the API contains information about all customers who have made a successful purchase. When an agent inputs a customer ID, the customer's data is automatically written to a new SQL database (locally). The database, named RewardedCustomers, contains all information about the customer.
 Additionally, there is a database called ApiUsages that tracks how many customers each agent has chosen per day. This ensures that agents are limited to selecting 5 customers per day.
+
+For the testing we use Swagger UI to test the API functionality.
