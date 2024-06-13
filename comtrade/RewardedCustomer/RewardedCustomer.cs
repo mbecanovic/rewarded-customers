@@ -1,17 +1,18 @@
 ﻿namespace comtrade.RewardedCustomer
 {
-    public class RewardedCustomer
+    public class RewardedCustomers
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string SSN { get; set; }
         public string DOB { get; set; }
-        public int HomeAddressId { get; set; } // Foreign key for home address
-        public Address HomeAddress { get; set; } // Navigation property for home address
-        public int OfficeAddressId { get; set; } // Foreign key for office address
-        public Address OfficeAddress { get; set; } // Navigation property for office address
+        public int HomeAddressId { get; set; }
+        public Address HomeAddress { get; set; }
+        public int OfficeAddressId { get; set; }
+        public Address OfficeAddress { get; set; }
         public string FavoriteColors { get; set; }
         public string Age { get; set; }
+        public int TimesRewarded { get; set; }
     }
 
     public class Address
@@ -21,7 +22,15 @@
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
-        public ICollection<RewardedCustomer> RewardedCustomers { get; set; } // Navigation property for customers with this address
     }
+
+    public class ApiUsage
+    {
+        public int Id { get; set; }
+        public string AgentId { get; set; }
+        public int CallCount { get; set; }
+        public DateTime LastCallTime { get; set; }
+    }
+
 
 }

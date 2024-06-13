@@ -4,8 +4,9 @@ namespace comtrade.RewardedCustomer
 {
     public class RewardedCustomerContext : DbContext
     {
-        public DbSet<RewardedCustomer> RewardedCustomers { get; set; }
+        public DbSet<RewardedCustomers> RewardedCustomers { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<ApiUsage> ApiUsages { get; set; }
 
         public RewardedCustomerContext(DbContextOptions<RewardedCustomerContext> options) : base(options)
         {
@@ -13,26 +14,22 @@ namespace comtrade.RewardedCustomer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("rewardedCustomers");
+            
 
             modelBuilder.Entity<Address>()
                 .HasKey(a => a.Id);
 
-            modelBuilder.Entity<RewardedCustomer>()
-                .HasOne(rc => rc.Home)
-                .WithOne(a => a.RewardedCustomer)
-                .HasForeignKey<Address>(a => a.HomeId);
+            modelBuilder.Entity<RewardedCustomers>()
+                .HasOne(rc => rc.HomeAddress)
+                .WithMany()
+                .HasForeignKey(rc => rc.HomeAddressId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<RewardedCustomer>()
-                .HasOne(rc => rc.Office)
-                .WithOne(a => a.RewardedCustomer)
-                .HasForeignKey<Address>(a => a.OfficeId);
-
-            modelBuilder.Entity<RewardedCustomer>()
-                .Ignore(rc => rc.HomeAddress);
-
-            modelBuilder.Entity<RewardedCustomer>()
-                .Ignore(rc => rc.OfficeAddress);
+            modelBuilder.Entity<RewardedCustomers>()
+                .HasOne(rc => rc.OfficeAddress)
+                .WithMany()
+                .HasForeignKey(rc => rc.OfficeAddressId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 
